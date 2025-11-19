@@ -20,20 +20,16 @@ public class CheckLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        // Lấy thông tin từ form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        // Gọi BO để kiểm tra login
         Users user = usersBO.checkLogin(username, password);
         
         if (user != null) {
-            // Đăng nhập thành công
             HttpSession session = request.getSession();
             session.setAttribute("currentUser", user);
             session.setAttribute("username", username);
             
-            // Phân quyền dựa vào role
             if (usersBO.isAdmin(user)) {
                 session.setAttribute("isAdmin", true);
                 response.sendRedirect("admin_page.jsp");
@@ -42,7 +38,6 @@ public class CheckLoginServlet extends HttpServlet {
                 response.sendRedirect("user_page.jsp");
             }
         } else {
-            // Đăng nhập thất bại
             response.sendRedirect("login.jsp?error=1");
         }
     }
@@ -50,7 +45,6 @@ public class CheckLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        // Redirect về trang login nếu truy cập qua GET
         response.sendRedirect("login.jsp");
     }
 }
