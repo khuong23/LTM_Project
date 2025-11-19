@@ -16,7 +16,10 @@ public class DBConnection {
     private static String PASSWORD;
 
     static {
-        try (InputStream input = new FileInputStream(PROPERTIES_FILE)) {
+        try (InputStream input = DBConnection.class.getClassLoader().getResourceAsStream("setting.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Không tìm thấy file cấu hình setting.properties trong classpath");
+            }
             Properties prop = new Properties();
             prop.load(input);
             URL = prop.getProperty("db.url");

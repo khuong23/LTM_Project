@@ -40,4 +40,4 @@ build/
 .DS_Store
 
 # Ignore settings.properties
-setting.properties
+src/main/resources/setting.properties
