@@ -2,21 +2,56 @@ package model.Bean;
 
 public class Problems {
     private int problem_id;
+    private String title;
     private String description;
-    Problems(int problem_id, String description) {
+    private String difficulty;
+    private double ac_rate;
+    
+    public Problems(int problem_id, String title, String description, String difficulty, double ac_rate) {
         this.problem_id = problem_id;
+        this.title = title;
         this.description = description;
+        this.difficulty = difficulty;
+        this.ac_rate = ac_rate;
     }
+    
     public int getProblem_id() {
         return problem_id;
     }
+    
     public void setProblem_id(int problem_id) {
         this.problem_id = problem_id;
     }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
     public String getDescription() {
         return description;
     }
+    
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public String getDifficulty() {
+        return difficulty;
+    }
+    
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+    
+    public double getAc_rate() {
+        return ac_rate;
+    }
+    
+    public void setAc_rate(double ac_rate) {
+        this.ac_rate = ac_rate;
     }
 }
