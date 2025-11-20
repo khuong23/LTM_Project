@@ -35,7 +35,7 @@ public class CheckLoginServlet extends HttpServlet {
                 response.sendRedirect("admin_page.jsp");
             } else {
                 session.setAttribute("isAdmin", false);
-                response.sendRedirect("user_page.jsp");
+                response.sendRedirect("Home");
             }
         } else {
             response.sendRedirect("login.jsp?error=1");
