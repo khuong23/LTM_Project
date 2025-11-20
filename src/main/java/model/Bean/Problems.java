@@ -47,11 +47,19 @@ public class Problems {
         this.difficulty = difficulty;
     }
     
-    public double getAc_rate() {
+    public double getAcRate() {
         return ac_rate;
     }
     
-    public void setAc_rate(double ac_rate) {
+    public void setAcRate(double ac_rate) {
         this.ac_rate = ac_rate;
+    }
+    
+    public int getId() {
+        return problem_id;
+    }
+    
+    public void setId(int problem_id) {
+        this.problem_id = problem_id;
     }
 }
