@@ -3,10 +3,14 @@ package model.Bean;
 public class Problems {
     private int problem_id;
     private String description;
-    Problems(int problem_id, String description) {
+    public Problems(int problem_id, String description) {
         this.problem_id = problem_id;
         this.description = description;
     }
+
+    public Problems(int problemId, String title, String description, String difficulty, double acRate) {
+    }
+
     public int getProblem_id() {
         return problem_id;
     }
