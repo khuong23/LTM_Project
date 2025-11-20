@@ -1,9 +1,9 @@
 package model.Bean;
 
-public class Problems {
+public class Problem {
     private int problem_id;
     private String description;
-    Problems(int problem_id, String description) {
+    Problem(int problem_id, String description) {
         this.problem_id = problem_id;
         this.description = description;
     }
