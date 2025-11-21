@@ -17,4 +17,12 @@ public class ProblemsBO {
             return new ArrayList<>();
         }
     }
+    public Problems getProblemById(int problemId) {
+        try {
+            return problemsDAO.getProblemById(problemId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

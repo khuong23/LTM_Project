@@ -26,4 +26,24 @@ public class ProblemsDAO {
         }
         return list;
     }
+    public Problems getProblemById(int problemId) throws SQLException {
+        Connection conn = DBConnection.getConnection();
+        String query = "SELECT * FROM Problems WHERE problem_id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, problemId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Problems(
+                            rs.getInt("problem_id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getString("difficulty"),
+                            rs.getDouble("ac_rate")
+                    );
+                }
+            }
+        }
+        return null;
+    }
 }

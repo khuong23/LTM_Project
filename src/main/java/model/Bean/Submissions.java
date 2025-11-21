@@ -11,6 +11,7 @@ public class Submissions{
     private String output;
     private String error;
 
+    public Submissions(){}
     public Submissions(int submit_id, int user_id, int problem_id, String filename, String code, String status, int score, String ouput, String error) {
         this.submit_id = submit_id;
         this.user_id = user_id;
