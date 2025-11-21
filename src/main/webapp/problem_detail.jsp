@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chi tiết bài toán | ${problem.title}</title>
-    <link rel="stylesheet" href="detailStyle.css">
+    <link rel="stylesheet" href="styles/detailStyle.css">
 </head>
 <body>
 

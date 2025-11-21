@@ -143,7 +143,7 @@ body {
 /* Bố cục 2 cột: trái = nộp bài, phải = mô tả + kết quả */
 .problem-layout {
     display: grid;
-    grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     gap: 20px;
     align-items: flex-start;
 }
