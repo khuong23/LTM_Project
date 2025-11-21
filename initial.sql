@@ -35,7 +35,7 @@ CREATE TABLE TestCases(
     FOREIGN KEY (problem_id) REFERENCES Problems(problem_id)
 );
 
-INSERT INTO Users (username, password, role) 
+INSERT INTO Users (username, password, role)
 VALUES	('admin', '123', 'admin'),
 		('baokhuong', '123', 'user'),
 		('nguyenlong', '123', 'user'),
@@ -47,6 +47,16 @@ INSERT INTO TestCases (problem_id, input, expected_output)
 VALUES  (1, '2', 'YES'),
 		(1, '4', 'NO'),
         (1, '17', 'YES');
+
+
+ALTER TABLE Problems
+ADD COLUMN title VARCHAR(255) NOT NULL,
+ADD COLUMN difficulty ENUM('Easy', 'Medium', 'Hard') DEFAULT 'Easy',
+ADD COLUMN ac_rate DECIMAL(5,2) DEFAULT 0.00;
+
+-- Thêm dữ liệu mẫu phù hợp
+INSERT INTO Problems (title, description, difficulty, ac_rate)
+VALUES ('Kiểm tra số nguyên tố', 'Mô tả bài toán...', 'Easy', 75.5);
 
 
 

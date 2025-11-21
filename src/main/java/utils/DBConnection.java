@@ -1,7 +1,5 @@
-package com.ltmproject.utils;
+package utils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +23,7 @@ public class DBConnection {
             URL = prop.getProperty("db.url");
             USER = prop.getProperty("db.username");
             PASSWORD = prop.getProperty("db.password");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException("Không thể đọc file cấu hình");
         }

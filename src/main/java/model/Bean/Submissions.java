@@ -1,4 +1,4 @@
-package com.ltmproject.model;
+package model.Bean;
 
 public class Submissions{
     private int submit_id;
@@ -10,6 +10,8 @@ public class Submissions{
     private int score;
     private String output;
     private String error;
+
+    public Submissions(){}
     public Submissions(int submit_id, int user_id, int problem_id, String filename, String code, String status, int score, String ouput, String error) {
         this.submit_id = submit_id;
         this.user_id = user_id;
@@ -21,6 +23,7 @@ public class Submissions{
         this.output = ouput;
         this.error = error;
     }
+
     public int getSubmit_id() {
         return submit_id;
     }

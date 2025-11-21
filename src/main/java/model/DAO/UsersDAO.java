@@ -1,13 +1,14 @@
-package com.ltmproject.dao;
+package model.DAO;
 
-import com.ltmproject.model.Users;
-import com.ltmproject.utils.DBConnection;
+import model.Bean.Users;
+import utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class UsersDAO {
-    public static Users getUser(String username) throws SQLException{
+    
+    public Users getUser(String username) throws SQLException {
         Connection connection = DBConnection.getConnection();
         String query = "SELECT user_id, username, password, role FROM Users WHERE username = ?";
         try (var preparedStatement = connection.prepareStatement(query)) {
@@ -23,9 +24,14 @@ public class UsersDAO {
                     return null;
                 }
             }
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
-    public static Users setUser(String username, String password, String role) throws SQLException{
+    
+    public Users setUser(String username, String password, String role) throws SQLException {
         Connection connection = DBConnection.getConnection();
         String query = "INSERT INTO Users (username, password, role) VALUES (?, ?, ?)";
         try (var preparedStatement = connection.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS)) {
@@ -43,6 +49,10 @@ public class UsersDAO {
                 } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
+            }
+        } finally {
+            if (connection != null) {
+                connection.close();
             }
         }
     }
