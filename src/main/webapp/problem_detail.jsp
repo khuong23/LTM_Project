@@ -63,7 +63,7 @@
         <section class="right-panel">
 
             <div class="card problem-desc-card">
-                <h3>Mô tả bài toán</h3>
+                <h3>Mô tả bài toán (!!!Lưu ý: Đặt tên class là Main để có thể biên dịch) </h3>
                 <pre class="problem-description"><c:out value="${problem.description}"/></pre>
             </div>
 

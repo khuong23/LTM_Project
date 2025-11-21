@@ -26,13 +26,11 @@ public class JudgeService {
             Path workDir = Files.createTempDirectory("submission_" + submitId + "_");
             Path sourceFile = workDir.resolve("Main.java");
 
-            // Ghi code ra file
+// Ghi code ra file
             Files.writeString(sourceFile, sub.getCode());
 
-            // 1. Compile
-            ProcessBuilder javacPb = new ProcessBuilder(
-                    "javac", sourceFile.getFileName().toString()
-            );
+// 1. COMPILE
+            ProcessBuilder javacPb = new ProcessBuilder("javac", "Main.java");
             javacPb.directory(workDir.toFile());
             Process javacProc = javacPb.start();
 
@@ -40,7 +38,6 @@ public class JudgeService {
             int compileExit = javacProc.waitFor();
 
             if (compileExit != 0) {
-                // Lỗi compile
                 submissionsBO.updateResult(
                         submitId,
                         "COMPILE_ERROR",
@@ -51,6 +48,7 @@ public class JudgeService {
                 return;
             }
 
+// 2. RUN TESTCASES
             List<TestCase> testCases = testCasesBO.getByProblemId(sub.getProblem_id());
 
             int totalWeight = 0;
@@ -61,11 +59,12 @@ public class JudgeService {
                 totalWeight += tc.getWeight();
 
                 ProcessBuilder javaPb = new ProcessBuilder(
-                        "java", "Main"
+                        "java", "-cp", ".", "Main"   // 🔥 QUAN TRỌNG
                 );
-                javaPb.directory(workDir.toFile());
+                javaPb.directory(workDir.toFile()); // 🔥 CŨNG QUAN TRỌNG
                 Process javaProc = javaPb.start();
 
+                // Ghi input
                 try (BufferedWriter w = new BufferedWriter(
                         new OutputStreamWriter(javaProc.getOutputStream()))) {
                     w.write(tc.getInput());
@@ -85,18 +84,34 @@ public class JudgeService {
                     return;
                 }
 
+                int exitCode = javaProc.exitValue();
                 String stdout = readStream(javaProc.getInputStream()).trim();
-                String stderr = readStream(javaProc.getErrorStream());
-
-                allOutput.append("Test ").append(tc.getTestCaseId()).append(":\n")
-                        .append(stdout).append("\n\n");
-
+                String stderr = readStream(javaProc.getErrorStream()).trim();
                 String expected = tc.getExpectedOutput().trim();
+
+                allOutput.append("Test ").append(tc.getTestCaseId()).append(":\n");
+                if (!stdout.isEmpty()) {
+                    allOutput.append("Output:\n").append(stdout).append("\n");
+                }
+                if (!stderr.isEmpty()) {
+                    allOutput.append("Error:\n").append(stderr).append("\n");
+                }
+                allOutput.append("\n");
+
+                // Nếu process lỗi runtime (exitCode != 0) → có thể coi là RUNTIME_ERROR
+                if (exitCode != 0) {
+                    submissionsBO.updateResult(
+                            submitId,
+                            "RUNTIME_ERROR",
+                            0,
+                            allOutput.toString(),
+                            stderr
+                    );
+                    return;
+                }
 
                 if (stdout.equals(expected)) {
                     passedWeight += tc.getWeight();
-                } else {
-                    // có thể log lệch để debug
                 }
             }
 
@@ -110,7 +125,6 @@ public class JudgeService {
                     allOutput.toString(),
                     null
             );
-
         } catch (Exception e) {
             e.printStackTrace();
             submissionsBO.updateResult(submitId, "RUNTIME_ERROR", 0, null, e.getMessage());

@@ -11,7 +11,7 @@ public class SubmissionsDAO {
         String sql = """
             SELECT * FROM Submissions
             WHERE user_id = ? AND problem_id = ?
-            ORDER BY created_at DESC
+            ORDER BY submit_id DESC
             LIMIT 1
         """;
 
@@ -44,12 +44,12 @@ public class SubmissionsDAO {
 
     public int insert(Submissions s) {
         String sql = """
-            INSERT INTO Submissions (user_id, problem_id, filename, code, status, score)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """;
+        INSERT INTO Submissions (user_id, problem_id, filename, code, status, score)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """;
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, s.getUser_id());
             ps.setInt(2, s.getProblem_id());
@@ -57,11 +57,15 @@ public class SubmissionsDAO {
             ps.setString(4, s.getCode());
             ps.setString(5, s.getStatus());
             ps.setInt(6, s.getScore());
-            ps.executeUpdate();
+
+            int affected = ps.executeUpdate();
+            if (affected == 0) {
+                return -1;
+            }
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1); // submit_id
+                    return rs.getInt(1);     // submit_id
                 }
             }
         } catch (SQLException e) {
@@ -69,6 +73,7 @@ public class SubmissionsDAO {
         }
         return -1;
     }
+
     public Submissions findById(int id) {
         String sql = "SELECT * FROM Submissions WHERE submit_id = ?";
 
