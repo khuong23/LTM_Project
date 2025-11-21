@@ -3,6 +3,7 @@ package controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import judge.JudgeManager;
 import model.BO.SubmissionsBO;
 import model.Bean.Submissions;
 import model.Bean.Users;
@@ -41,8 +42,10 @@ public class SubmitCodeController extends HttpServlet {
         s.setStatus("PENDING");
         s.setScore(0);
 
-        submissionsBO.createSubmission(s);
-
+        int submitId = submissionsBO.createSubmission(s);
+        if(submitId > 0){
+            JudgeManager.enqueue(submitId);
+        }
         response.sendRedirect(
                 request.getContextPath() + "/ProblemDetail?id=" + problemId + "&submitted=1"
         );
