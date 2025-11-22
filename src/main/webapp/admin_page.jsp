@@ -84,8 +84,9 @@
                     </td>
                     <td>${p.acRate}</td>
                     <td>
-                        <a class="btn btn-secondary" href="EditProblem?id=${p.problem_id}">Sửa</a>
-                        <a class="btn btn-secondary" href="TestCases?problem_id=${p.problem_id}">Test Cases</a>
+                        <a class="btn btn-secondary" href="ProblemEdit?problem_id=${p.problem_id}">
+                            Edit
+                        </a>
                     </td>
                 </tr>
             </c:forEach>

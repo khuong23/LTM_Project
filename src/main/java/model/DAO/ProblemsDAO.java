@@ -7,6 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProblemsDAO {
+    public static void updateProblem(Problems p) {
+        String sql = "UPDATE Problems SET title = ?, description = ?, difficulty = ?, ac_rate = ? WHERE problem_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, p.getTitle());
+            ps.setString(2, p.getDescription());
+            ps.setString(3, p.getDifficulty());
+            ps.setDouble(4, p.getAcRate());
+            ps.setInt(5, p.getProblem_id());
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
     public List<Problems> getAllProblems() throws SQLException {
         List<Problems> list = new ArrayList<>();
         Connection conn = DBConnection.getConnection();

@@ -29,4 +29,8 @@ public class ProblemsBO {
     public int countProblems() {
         return ProblemsDAO.countProblems();
     }
+
+    public void updateProblem(Problems p) {
+        ProblemsDAO.updateProblem(p);
+    }
 }
