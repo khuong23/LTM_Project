@@ -46,4 +46,18 @@ public class ProblemsDAO {
         }
         return null;
     }
+    public static int countProblems() {
+        int count = 0;
+        String query = "SELECT COUNT(*) AS total FROM Problems";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

@@ -25,4 +25,8 @@ public class ProblemsBO {
             return null;
         }
     }
+
+    public int countProblems() {
+        return ProblemsDAO.countProblems();
+    }
 }
