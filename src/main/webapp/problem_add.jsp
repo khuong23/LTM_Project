@@ -49,6 +49,10 @@
                 <input type="number" step="0.01" name="acRate" placeholder="VD: 75.50">
                 <div class="text-muted mt-1">Có thể để trống, mặc định = 0</div>
             </div>
+            <div class="form-group">
+                  <label>Thẻ (Tags):</label>
+                    <input type="text" name="tags" placeholder="VD: Math, Array, Quy hoạch động">
+            </div>
 
             <div class="form-group">
                 <label>Mô tả:</label>

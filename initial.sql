@@ -56,5 +56,4 @@ VALUES  (1, '2', 'YES'),
 		(1, '4', 'NO'),
         (1, '17', 'YES');
 
-
-
+ALTER TABLE Problems ADD COLUMN tags VARCHAR(100) DEFAULT 'Basic';

@@ -10,7 +10,7 @@
 </head>
 <body>
     <nav>
-        <div class="logo">Logo</div>
+        <div class="LTM Project">Logo</div>
         <div>
             <a href="#home">Trang Chủ</a>
             <a href="#problems">Bài Toán</a>
@@ -28,24 +28,33 @@
     <div class="problem-list">
         <h3>Danh Sách Các Bài Toán</h3>
 
-        <div class="filter">
-            <select>
-                <option value="difficulty">Độ khó</option>
-                <option value="easy">Dễ</option>
-                <option value="medium">Trung Bình</option>
-                <option value="hard">Khó</option>
-            </select>
-            <select>
-                <option value="tags">Thẻ</option>
-                <option value="math">Toán Học</option>
-                <option value="dp">Lập Trình Động</option>
-            </select>
-            <select>
-                <option value="status">Trạng thái</option>
-                <option value="solved">Đã Giải</option>
-                <option value="unsolved">Chưa Giải</option>
-            </select>
-        </div>
+<div class="filter">
+    <form action="Home" method="get" id="filterForm" style="display: flex; gap: 15px; width: 100%;">
+
+        <select name="difficulty" onchange="document.getElementById('filterForm').submit()">
+            <option value="">Độ khó (Tất cả)</option>
+            <option value="Easy" ${paramDifficulty == 'Easy' ? 'selected' : ''}>Dễ</option>
+            <option value="Medium" ${paramDifficulty == 'Medium' ? 'selected' : ''}>Trung Bình</option>
+            <option value="Hard" ${paramDifficulty == 'Hard' ? 'selected' : ''}>Khó</option>
+        </select>
+
+        <select name="tags" onchange="document.getElementById('filterForm').submit()">
+              <option value="">Thẻ (Tất cả)</option>
+              <c:forEach items="${availableTags}" var="t">
+                  <option value="${t}" ${paramTags == t ? 'selected' : ''}>
+                      ${t}
+                  </option>
+              </c:forEach>
+          </select>
+        <select name="status" onchange="document.getElementById('filterForm').submit()">
+            <option value="">Trạng thái (Tất cả)</option>
+            <option value="solved" ${paramStatus == 'solved' ? 'selected' : ''}>Đã Giải (Accepted)</option>
+            <option value="unsolved" ${paramStatus == 'unsolved' ? 'selected' : ''}>Chưa Giải</option>
+        </select>
+
+        <button type="submit" class="btn" style="padding: 5px 15px;">Lọc</button>
+    </form>
+</div>
 
         <table class="problem-table">
             <thead>

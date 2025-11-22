@@ -85,6 +85,7 @@ public class EditProblemController extends HttpServlet {
                     String description = request.getParameter("description");
                     String difficulty = request.getParameter("difficulty");
                     String acRateStr = request.getParameter("acRate");
+                    String tags = request.getParameter("tags");
 
                     double acRate = 0;
                     try {
@@ -99,6 +100,7 @@ public class EditProblemController extends HttpServlet {
                     p.setDescription(description);
                     p.setDifficulty(difficulty);
                     p.setAcRate(acRate);
+                    p.setTags(tags);
 
                     problemsBO.updateProblem(p);
                     break;

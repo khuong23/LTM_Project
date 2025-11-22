@@ -56,6 +56,10 @@
                     <label>AC Rate (%):</label>
                     <input type="number" step="0.01" name="acRate" value="${problem.acRate}">
                 </div>
+                <div class="form-group">
+                                    <label>Thẻ (Tags):</label>
+                                    <input type="text" name="tags" value="${problem.tags}" placeholder="VD: Math, Array, DP">
+                                </div>
 
                 <div class="form-group">
                     <label>Mô tả:</label>

@@ -5,6 +5,7 @@ import model.DAO.ProblemsDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 public class ProblemsBO {
     private ProblemsDAO problemsDAO = new ProblemsDAO();
@@ -17,6 +18,7 @@ public class ProblemsBO {
             return new ArrayList<>();
         }
     }
+
     public Problems getProblemById(int problemId) {
         try {
             return problemsDAO.getProblemById(problemId);
@@ -24,6 +26,27 @@ public class ProblemsBO {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<String> getAllUniqueTags() {
+        List<String> rawTags = problemsDAO.getAllTagsRaw();
+
+        Set<String> uniqueTags = new TreeSet<>();
+
+        for (String row : rawTags) {
+            if (row == null) continue;
+
+            String[] parts = row.split(",");
+
+            for (String part : parts) {
+                String cleanTag = part.trim();
+                if (!cleanTag.isEmpty()) {
+                    uniqueTags.add(cleanTag);
+                }
+            }
+        }
+
+        return new ArrayList<>(uniqueTags);
     }
 
     public int countProblems() {
@@ -38,5 +61,11 @@ public class ProblemsBO {
         return ProblemsDAO.addProblem(p);
     }
 
-    public void deleteProblem(int problemId) { problemsDAO.deleteProblems(problemId);}
+    public void deleteProblem(int problemId) {
+        problemsDAO.deleteProblems(problemId);
+    }
+
+    public List<Problems> getProblemsByFilter(String difficulty, String tag, String status, int userId) {
+        return problemsDAO.getProblemsByFilter(difficulty, tag, status, userId);
+    }
 }
