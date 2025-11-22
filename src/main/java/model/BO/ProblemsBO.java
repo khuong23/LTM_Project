@@ -33,4 +33,8 @@ public class ProblemsBO {
     public void updateProblem(Problems p) {
         ProblemsDAO.updateProblem(p);
     }
+
+    public int addProblem(Problems p) {
+        return ProblemsDAO.addProblem(p);
+    }
 }

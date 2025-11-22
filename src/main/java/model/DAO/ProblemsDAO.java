@@ -20,6 +20,32 @@ public class ProblemsDAO {
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
+    public static int addProblem(Problems p) {
+        String sql = "INSERT INTO Problems (title, description, difficulty, ac_rate) " +
+                "VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, p.getTitle());
+            ps.setString(2, p.getDescription());
+            ps.setString(3, p.getDifficulty());
+            ps.setDouble(4, p.getAcRate());
+
+            int affected = ps.executeUpdate();
+            if (affected > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1); // trả về problem_id vừa tạo
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
     public List<Problems> getAllProblems() throws SQLException {
         List<Problems> list = new ArrayList<>();
         Connection conn = DBConnection.getConnection();

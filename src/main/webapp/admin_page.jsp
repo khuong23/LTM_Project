@@ -51,7 +51,7 @@
         <div class="section-title">Danh sách bài tập</div>
 
         <div class="top-actions">
-            <a href="CreateProblem" class="btn">+ Thêm bài mới</a>
+            <a href="CreateProblem" class="btn">+ Add Problems</a>
         </div>
 
         <table>
