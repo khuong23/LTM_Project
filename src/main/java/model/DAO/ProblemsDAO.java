@@ -7,6 +7,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProblemsDAO {
+    public static void updateProblem(Problems p) {
+        String sql = "UPDATE Problems SET title = ?, description = ?, difficulty = ?, ac_rate = ? WHERE problem_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, p.getTitle());
+            ps.setString(2, p.getDescription());
+            ps.setString(3, p.getDifficulty());
+            ps.setDouble(4, p.getAcRate());
+            ps.setInt(5, p.getProblem_id());
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public static int addProblem(Problems p) {
+        String sql = "INSERT INTO Problems (title, description, difficulty, ac_rate) " +
+                "VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, p.getTitle());
+            ps.setString(2, p.getDescription());
+            ps.setString(3, p.getDifficulty());
+            ps.setDouble(4, p.getAcRate());
+
+            int affected = ps.executeUpdate();
+            if (affected > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1); // trả về problem_id vừa tạo
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
     public List<Problems> getAllProblems() throws SQLException {
         List<Problems> list = new ArrayList<>();
         Connection conn = DBConnection.getConnection();
@@ -45,5 +84,19 @@ public class ProblemsDAO {
             }
         }
         return null;
+    }
+    public static int countProblems() {
+        int count = 0;
+        String query = "SELECT COUNT(*) AS total FROM Problems";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }

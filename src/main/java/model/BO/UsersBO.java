@@ -50,4 +50,9 @@ public class UsersBO {
             return null;
         }
     }
+
+    public int countUsers() {
+        return UsersDAO.countUsers();
+    }
+
 }

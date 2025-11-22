@@ -4,6 +4,8 @@ import model.Bean.Submissions;
 import utils.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubmissionsDAO {
 
@@ -130,5 +132,103 @@ public class SubmissionsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int countSubmissions() {
+        String sql = "SELECT COUNT(*) FROM Submissions";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
+
+    public int countAcceptedSubmissions() {
+        String sql = "SELECT COUNT(*) FROM Submissions WHERE status = 'ACCEPTED'";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Submissions> getRecentSubmissions(int numOfSubmissions) {
+        List<Submissions> list = new ArrayList<>();
+        String sql = "SELECT s.submit_id, s.user_id, s.problem_id, s.status, s.score, " +
+                "u.username, p.title AS problem_title " +
+                "FROM Submissions s " +
+                "JOIN Users u ON s.user_id = u.user_id " +
+                "JOIN Problems p ON s.problem_id = p.problem_id " +
+                "ORDER BY s.submit_id DESC " +
+                "LIMIT ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, numOfSubmissions);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Submissions s = new Submissions();
+                    s.setSubmit_id(rs.getInt("submit_id"));
+                    s.setUser_id(rs.getInt("user_id"));
+                    s.setProblem_id(rs.getInt("problem_id"));
+                    s.setStatus(rs.getString("status"));
+                    s.setScore(rs.getInt("score"));
+                    list.add(s);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public String getUsernameBySubmissionId(int submitId) {
+        String sql = """
+        SELECT u.username
+        FROM Submissions s
+        JOIN Users u ON s.user_id = u.user_id
+        WHERE s.submit_id = ?
+    """;
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, submitId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public String getProblemTitleBySubmissionId(int submitId) {
+        String sql = """
+        SELECT p.title
+        FROM Submissions s
+        JOIN Problems p ON s.problem_id = p.problem_id
+        WHERE s.submit_id = ?
+    """;
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, submitId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("title");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

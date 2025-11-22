@@ -14,7 +14,7 @@ public class Problems {
         this.difficulty = difficulty;
         this.ac_rate = ac_rate;
     }
-    
+    public Problems() {}
     public int getProblem_id() {
         return problem_id;
     }

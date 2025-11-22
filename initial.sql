@@ -1,3 +1,4 @@
+DROP database LTM_Project;
 CREATE DATABASE IF NOT EXISTS LTM_Project CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE LTM_Project;
 
@@ -40,14 +41,6 @@ VALUES	('admin', '123', 'admin'),
 		('baokhuong', '123', 'user'),
 		('nguyenlong', '123', 'user'),
 		('baominh', '123', 'user');
-INSERT INTO Problems (description)
-VALUES	('Viết chương trình Java kiểm tra một số nguyên dương n có phải là số nguyên tố hay không. Chương trình đọc một số n từ input và in "YES" nếu n là số nguyên tố, "NO" nếu không phải.');
-
-INSERT INTO TestCases (problem_id, input, expected_output)
-VALUES  (1, '2', 'YES'),
-		(1, '4', 'NO'),
-        (1, '17', 'YES');
-
 
 ALTER TABLE Problems
 ADD COLUMN title VARCHAR(255) NOT NULL,
@@ -56,7 +49,12 @@ ADD COLUMN ac_rate DECIMAL(5,2) DEFAULT 0.00;
 
 -- Thêm dữ liệu mẫu phù hợp
 INSERT INTO Problems (title, description, difficulty, ac_rate)
-VALUES ('Kiểm tra số nguyên tố', 'Mô tả bài toán...', 'Easy', 75.5);
+VALUES ('Kiểm tra số nguyên tố', 'Viết chương trình Java kiểm tra một số nguyên dương n có phải là số nguyên tố hay không. Chương trình đọc một số n từ input và in "YES" nếu n là số nguyên tố, "NO" nếu không phải.', 'Easy', 75.5);
+
+INSERT INTO TestCases (problem_id, input, expected_output)
+VALUES  (1, '2', 'YES'),
+		(1, '4', 'NO'),
+        (1, '17', 'YES');
 
 
 

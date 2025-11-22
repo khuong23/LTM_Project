@@ -32,7 +32,7 @@ public class CheckLoginServlet extends HttpServlet {
             
             if (usersBO.isAdmin(user)) {
                 session.setAttribute("isAdmin", true);
-                response.sendRedirect("admin_page.jsp");
+                response.sendRedirect("admin");
             } else {
                 session.setAttribute("isAdmin", false);
                 response.sendRedirect("Home");

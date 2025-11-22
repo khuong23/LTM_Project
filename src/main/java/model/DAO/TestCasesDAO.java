@@ -35,4 +35,34 @@ public class TestCasesDAO {
 
         return list;
     }
+    public void addTestCase(TestCase tc) {
+        String sql = "INSERT INTO TestCases (problem_id, input, expected_output) VALUES (?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, tc.getProblemId());
+            ps.setString(2, tc.getInput());
+            ps.setString(3, tc.getExpectedOutput());
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void updateTestCase(TestCase tc) {
+        String sql = "UPDATE TestCases SET input = ?, expected_output = ? WHERE test_case_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tc.getInput());
+            ps.setString(2, tc.getExpectedOutput());
+            ps.setInt(3, tc.getTestCaseId());
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void deleteTestCase(int testCaseId) {
+        String sql = "DELETE FROM TestCases WHERE test_case_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, testCaseId);
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
 }

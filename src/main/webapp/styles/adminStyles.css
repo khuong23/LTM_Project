@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    background: #2d3436;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar a {
+    color: #ffeaa7;
+    text-decoration: none;
+    margin-left: 15px;
+}
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+h1 {
+    margin-bottom: 20px;
+}
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.card-title {
+    font-size: 14px;
+    color: #636e72;
+    margin-bottom: 8px;
+}
+.card-number {
+    font-size: 22px;
+    font-weight: bold;
+}
+.section-title {
+    margin: 25px 0 10px;
+    font-size: 18px;
+    border-left: 4px solid #0984e3;
+    padding-left: 8px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+th {
+    background: #dfe6e9;
+    text-align: left;
+}
+tr:last-child td {
+    border-bottom: none;
+}
+.badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fff;
+}
+.badge-easy { background: #00b894; }
+.badge-medium { background: #fdcb6e; }
+.badge-hard { background: #d63031; }
+
+.status-ACCEPTED { color: #00b894; font-weight: bold; }
+.status-WRONG_ANSWER { color: #d63031; font-weight: bold; }
+.status-COMPILE_ERROR,
+.status-RUNTIME_ERROR,
+.status-TIME_LIMIT { color: #e17055; font-weight: bold; }
+.btn {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    background: #0984e3;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+}
+.btn-secondary {
+    background: #636e72;
+}
+.top-actions {
+    margin-bottom: 10px;
+    text-align: right;
+}

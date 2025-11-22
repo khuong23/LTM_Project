@@ -7,7 +7,22 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class UsersDAO {
-    
+
+    public static int countUsers() {
+        int count = 0;
+        String query = "SELECT COUNT(*) AS total FROM Users";
+        try (Connection conn = DBConnection.getConnection();
+             var ps = conn.prepareStatement(query);
+             var rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     public Users getUser(String username) throws SQLException {
         Connection connection = DBConnection.getConnection();
         String query = "SELECT user_id, username, password, role FROM Users WHERE username = ?";
