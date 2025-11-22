@@ -15,7 +15,6 @@
             <a href="#home">Trang Chủ</a>
             <a href="#problems">Bài Toán</a>
             <a href="#leaderboard">Bảng Xếp Hạng</a>
-            <a href="#about">Giới Thiệu</a>
             <a href="#profile">${username}</a>
             <a href="${pageContext.request.contextPath}/Logout">Đăng Xuất</a>
         </div>
