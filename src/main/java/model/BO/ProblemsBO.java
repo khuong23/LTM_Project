@@ -37,4 +37,6 @@ public class ProblemsBO {
     public int addProblem(Problems p) {
         return ProblemsDAO.addProblem(p);
     }
+
+    public void deleteProblem(int problemId) { problemsDAO.deleteProblems(problemId);}
 }

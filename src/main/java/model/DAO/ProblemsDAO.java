@@ -99,4 +99,41 @@ public class ProblemsDAO {
         }
         return count;
     }
+
+    public void deleteProblems(int problemId) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            String sqlDeleteTC = "DELETE FROM TestCases WHERE problem_id = ?";
+            ps = conn.prepareStatement(sqlDeleteTC);
+            ps.setInt(1, problemId);
+            ps.executeUpdate();
+            ps.close();
+
+            String sqlDeleteProb = "DELETE FROM Problems WHERE problem_id = ?";
+            ps = conn.prepareStatement(sqlDeleteProb);
+            ps.setInt(1, problemId);
+            ps.executeUpdate();
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                if (conn != null) conn.rollback();
+
+            } catch (SQLException ex) {
+                 ex.printStackTrace();
+            } finally {
+                try {
+                    if (ps != null) ps.close();
+                    if(conn != null) conn.close();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

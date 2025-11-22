@@ -87,7 +87,14 @@
                         <a class="btn btn-secondary" href="ProblemEdit?problem_id=${p.problem_id}">
                             Edit
                         </a>
-                    </td>
+
+                        <a class="btn btn-danger"
+                           href="DeleteProblem?id=${p.problem_id}"
+                           onclick="return confirm('CẢNH BÁO: Hành động này sẽ xóa bài tập cùng TẤT CẢ các Submissions và Test Cases liên quan. Bạn có chắc chắn không?');"
+                           style="margin-left: 5px; background-color: #d63031;">
+                            Delete
+                        </a>
+                        </td>
                 </tr>
             </c:forEach>
 
