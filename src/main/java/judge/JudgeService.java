@@ -90,8 +90,9 @@ public class JudgeService {
                 String expected = tc.getExpectedOutput().trim();
 
                 allOutput.append("Test ").append(tc.getTestCaseId()).append(":\n");
+                allOutput.append("Input: ").append(tc.getInput()).append("\n");
                 if (!stdout.isEmpty()) {
-                    allOutput.append("Output:\n").append(stdout).append("\n");
+                    allOutput.append("Output: ").append(stdout).append("\n");
                 }
                 if (!stderr.isEmpty()) {
                     allOutput.append("Error:\n").append(stderr).append("\n");
