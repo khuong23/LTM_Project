@@ -15,7 +15,6 @@
                 <div class="LTM Project">Logo</div>
                 <div>
                     <a href="#home">Trang Chủ</a>
-                    <a href="#problems">Bài Toán</a>
                     <a href="Leaderboard">Bảng Xếp Hạng</a>
                     <a href="#profile">${username}</a>
                     <a href="${pageContext.request.contextPath}/Logout">Đăng Xuất</a>

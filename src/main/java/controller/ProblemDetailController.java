@@ -45,11 +45,12 @@ public class ProblemDetailController extends HttpServlet {
             return;
         }
 
-        Submissions lastSubmission =
-                submissionsBO.getLatestSubmission(currentUser.getUser_id(), problemId);
+        Submissions lastSubmission = submissionsBO.getLatestSubmission(currentUser.getUser_id(), problemId);
+        java.util.List<Submissions> submissionHistory = submissionsBO.getHistory(currentUser.getUser_id(), problemId);
 
         request.setAttribute("problem", problem);
         request.setAttribute("lastSubmission", lastSubmission);
+        request.setAttribute("submissionHistory", submissionHistory);
 
         request.getRequestDispatcher("problem_detail.jsp").forward(request, response);
     }

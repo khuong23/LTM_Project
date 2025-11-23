@@ -11,14 +11,14 @@ public class SubmissionsDAO {
 
     public Submissions findLatestByUserAndProblem(int userId, int problemId) {
         String sql = """
-            SELECT * FROM Submissions
-            WHERE user_id = ? AND problem_id = ?
-            ORDER BY submit_id DESC
-            LIMIT 1
-        """;
+                    SELECT * FROM Submissions
+                    WHERE user_id = ? AND problem_id = ?
+                    ORDER BY submit_id DESC
+                    LIMIT 1
+                """;
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
             ps.setInt(2, problemId);
@@ -46,12 +46,12 @@ public class SubmissionsDAO {
 
     public int insert(Submissions s) {
         String sql = """
-        INSERT INTO Submissions (user_id, problem_id, filename, code, status, score)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """;
+                    INSERT INTO Submissions (user_id, problem_id, filename, code, status, score)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """;
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, s.getUser_id());
             ps.setInt(2, s.getProblem_id());
@@ -67,7 +67,7 @@ public class SubmissionsDAO {
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1);     // submit_id
+                    return rs.getInt(1); // submit_id
                 }
             }
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class SubmissionsDAO {
         String sql = "SELECT * FROM Submissions WHERE submit_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -103,10 +103,11 @@ public class SubmissionsDAO {
         }
         return null;
     }
+
     public void updateStatus(int submitId, String status) {
         String sql = "UPDATE Submissions SET status = ? WHERE submit_id = ?";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setInt(2, submitId);
             ps.executeUpdate();
@@ -117,12 +118,12 @@ public class SubmissionsDAO {
 
     public void updateResult(int submitId, String status, int score, String output, String error) {
         String sql = """
-        UPDATE Submissions
-        SET status = ?, score = ?, output = ?, error = ?
-        WHERE submit_id = ?
-    """;
+                    UPDATE Submissions
+                    SET status = ?, score = ?, output = ?, error = ?
+                    WHERE submit_id = ?
+                """;
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setInt(2, score);
             ps.setString(3, output);
@@ -137,9 +138,10 @@ public class SubmissionsDAO {
     public int countSubmissions() {
         String sql = "SELECT COUNT(*) FROM Submissions";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) return rs.getInt(1);
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next())
+                return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,9 +152,10 @@ public class SubmissionsDAO {
     public int countAcceptedSubmissions() {
         String sql = "SELECT COUNT(*) FROM Submissions WHERE status = 'ACCEPTED'";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) return rs.getInt(1);
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next())
+                return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -170,7 +173,7 @@ public class SubmissionsDAO {
                 "LIMIT ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, numOfSubmissions);
             try (ResultSet rs = ps.executeQuery()) {
@@ -192,13 +195,13 @@ public class SubmissionsDAO {
 
     public String getUsernameBySubmissionId(int submitId) {
         String sql = """
-        SELECT u.username
-        FROM Submissions s
-        JOIN Users u ON s.user_id = u.user_id
-        WHERE s.submit_id = ?
-    """;
+                    SELECT u.username
+                    FROM Submissions s
+                    JOIN Users u ON s.user_id = u.user_id
+                    WHERE s.submit_id = ?
+                """;
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, submitId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -213,13 +216,13 @@ public class SubmissionsDAO {
 
     public String getProblemTitleBySubmissionId(int submitId) {
         String sql = """
-        SELECT p.title
-        FROM Submissions s
-        JOIN Problems p ON s.problem_id = p.problem_id
-        WHERE s.submit_id = ?
-    """;
+                    SELECT p.title
+                    FROM Submissions s
+                    JOIN Problems p ON s.problem_id = p.problem_id
+                    WHERE s.submit_id = ?
+                """;
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, submitId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -230,5 +233,33 @@ public class SubmissionsDAO {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public List<Submissions> getHistory(int userId, int problemId) {
+        List<Submissions> list = new ArrayList<>();
+        String sql = "SELECT * FROM Submissions WHERE user_id = ? AND problem_id = ? ORDER BY submit_id DESC";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, problemId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Submissions s = new Submissions();
+                    s.setSubmit_id(rs.getInt("submit_id"));
+                    s.setUser_id(rs.getInt("user_id"));
+                    s.setProblem_id(rs.getInt("problem_id"));
+                    s.setFilename(rs.getString("filename"));
+                    s.setCode(rs.getString("code"));
+                    s.setStatus(rs.getString("status"));
+                    s.setScore(rs.getInt("score"));
+                    s.setOutput(rs.getString("output"));
+                    s.setError(rs.getString("error"));
+                    list.add(s);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

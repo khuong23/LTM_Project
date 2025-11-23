@@ -16,9 +16,11 @@ public class SubmissionsBO {
     public int createSubmission(Submissions submission) {
         return submissionsDAO.insert(submission);
     }
+
     public Submissions getById(int submitId) {
         return submissionsDAO.findById(submitId);
     }
+
     public void updateStatus(int submitId, String status) {
         submissionsDAO.updateStatus(submitId, status);
     }
@@ -38,10 +40,16 @@ public class SubmissionsBO {
     public List<Submissions> getRecentSubmissions(int numOfSubmissions) {
         return submissionsDAO.getRecentSubmissions(numOfSubmissions);
     }
+
     public String getUsernameBySubmissionId(int submitId) {
         return submissionsDAO.getUsernameBySubmissionId(submitId);
     }
+
     public String getProblemTitleBySubmissionId(int submitId) {
         return submissionsDAO.getProblemTitleBySubmissionId(submitId);
+    }
+
+    public List<Submissions> getHistory(int userId, int problemId) {
+        return submissionsDAO.getHistory(userId, problemId);
     }
 }
