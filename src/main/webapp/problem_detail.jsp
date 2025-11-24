@@ -15,9 +15,6 @@
                 <div class="logo">LTM Judge</div>
                 <div class="nav-links">
                     <a href="${pageContext.request.contextPath}/Home">Trang Chủ</a>
-                    <a href="#">Bài Toán</a>
-                    <a href="#">Bảng Xếp Hạng</a>
-                    <a href="#">Giới Thiệu</a>
                     <a href="#">${currentUser.username}</a>
                     <a href="${pageContext.request.contextPath}/Logout">Đăng Xuất</a>
                 </div>
