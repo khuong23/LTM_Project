@@ -62,6 +62,8 @@ public class JudgeService {
                         "java", "-cp", ".", "Main" // 🔥 QUAN TRỌNG
                 );
                 javaPb.directory(workDir.toFile()); // 🔥 CŨNG QUAN TRỌNG
+
+                long startNs = System.nanoTime();
                 Process javaProc = javaPb.start();
 
                 // Ghi input
@@ -72,6 +74,8 @@ public class JudgeService {
                 }
 
                 boolean finished = javaProc.waitFor(30, TimeUnit.SECONDS);
+                long endNs = System.nanoTime();
+                long runtimeMs = (endNs - startNs) / 1_000_000; // ms
                 if (!finished) {
                     javaProc.destroyForcibly();
                     submissionsBO.updateResult(
@@ -88,7 +92,7 @@ public class JudgeService {
                 String stderr = readStream(javaProc.getErrorStream()).trim();
                 String expected = tc.getExpectedOutput().trim();
 
-                allOutput.append("Test ").append(tc.getTestCaseId()).append(":\n");
+                allOutput.append("Test ").append(":\n");
                 allOutput.append("Input: ").append(tc.getInput()).append("\n");
                 if (!stdout.isEmpty()) {
                     allOutput.append("Output: ").append(stdout).append("\n");
@@ -97,6 +101,7 @@ public class JudgeService {
                 if (!stderr.isEmpty()) {
                     allOutput.append("Error:\n").append(stderr).append("\n");
                 }
+                allOutput.append("Runtime: ").append(runtimeMs).append(" ms\n");
                 allOutput.append("\n");
 
                 // Nếu process lỗi runtime (exitCode != 0) → có thể coi là RUNTIME_ERROR

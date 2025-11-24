@@ -16,7 +16,7 @@ public class ProblemsDAO {
             ps.setString(3, p.getDifficulty());
             ps.setDouble(4, p.getAcRate());
             ps.setString(5, p.getTags());
-            ps.setInt(5, p.getProblem_id());
+            ps.setInt(6, p.getProblem_id());
             ps.executeUpdate();
         } catch (SQLException e) { e.printStackTrace(); }
     }
