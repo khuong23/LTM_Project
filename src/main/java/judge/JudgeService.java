@@ -17,7 +17,8 @@ public class JudgeService {
 
     public void judgeSubmission(int submitId) {
         Submissions sub = submissionsBO.getById(submitId);
-        if (sub == null) return;
+        if (sub == null)
+            return;
 
         // cập nhật trạng thái
         submissionsBO.updateStatus(submitId, "PROCESSING");
@@ -26,10 +27,10 @@ public class JudgeService {
             Path workDir = Files.createTempDirectory("submission_" + submitId + "_");
             Path sourceFile = workDir.resolve("Main.java");
 
-// Ghi code ra file
+            // Ghi code ra file
             Files.writeString(sourceFile, sub.getCode());
 
-// 1. COMPILE
+            // 1. COMPILE
             ProcessBuilder javacPb = new ProcessBuilder("javac", "Main.java");
             javacPb.directory(workDir.toFile());
             Process javacProc = javacPb.start();
@@ -43,12 +44,11 @@ public class JudgeService {
                         "COMPILE_ERROR",
                         0,
                         null,
-                        compileErr
-                );
+                        compileErr);
                 return;
             }
 
-// 2. RUN TESTCASES
+            // 2. RUN TESTCASES
             List<TestCase> testCases = testCasesBO.getByProblemId(sub.getProblem_id());
 
             int totalWeight = 0;
@@ -59,7 +59,7 @@ public class JudgeService {
                 totalWeight += tc.getWeight();
 
                 ProcessBuilder javaPb = new ProcessBuilder(
-                        "java", "-cp", ".", "Main"   // 🔥 QUAN TRỌNG
+                        "java", "-cp", ".", "Main" // 🔥 QUAN TRỌNG
                 );
                 javaPb.directory(workDir.toFile()); // 🔥 CŨNG QUAN TRỌNG
                 Process javaProc = javaPb.start();
@@ -71,7 +71,7 @@ public class JudgeService {
                     w.flush();
                 }
 
-                boolean finished = javaProc.waitFor(2, TimeUnit.SECONDS);
+                boolean finished = javaProc.waitFor(30, TimeUnit.SECONDS);
                 if (!finished) {
                     javaProc.destroyForcibly();
                     submissionsBO.updateResult(
@@ -79,8 +79,7 @@ public class JudgeService {
                             "TIME_LIMIT",
                             0,
                             allOutput.toString(),
-                            "Time limit exceeded"
-                    );
+                            "Time limit exceeded");
                     return;
                 }
 
@@ -94,6 +93,7 @@ public class JudgeService {
                 if (!stdout.isEmpty()) {
                     allOutput.append("Output: ").append(stdout).append("\n");
                 }
+                allOutput.append("Expected: ").append(expected).append("\n");
                 if (!stderr.isEmpty()) {
                     allOutput.append("Error:\n").append(stderr).append("\n");
                 }
@@ -106,8 +106,7 @@ public class JudgeService {
                             "RUNTIME_ERROR",
                             0,
                             allOutput.toString(),
-                            stderr
-                    );
+                            stderr);
                     return;
                 }
 
@@ -124,8 +123,7 @@ public class JudgeService {
                     finalStatus,
                     score,
                     allOutput.toString(),
-                    null
-            );
+                    null);
         } catch (Exception e) {
             e.printStackTrace();
             submissionsBO.updateResult(submitId, "RUNTIME_ERROR", 0, null, e.getMessage());

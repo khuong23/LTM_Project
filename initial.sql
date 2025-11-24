@@ -57,3 +57,28 @@ VALUES  (1, '2', 'YES'),
         (1, '17', 'YES');
 
 ALTER TABLE Problems ADD COLUMN tags VARCHAR(100) DEFAULT 'Basic';
+
+-- Tăng giới hạn gói tin lên 64MB (đủ cho bài toán này)
+SET GLOBAL max_allowed_packet = 67108864;
+
+USE LTM_Project;
+ALTER TABLE TestCases MODIFY input LONGTEXT;
+ALTER TABLE TestCases MODIFY expected_output LONGTEXT;
+
+-- Tạo đề bài
+INSERT INTO Problems (title, description, difficulty, ac_rate, tags)
+VALUES (
+    'DDoS Detection: Phân tích Log hệ thống',
+    'Hệ thống nhận được một file log chứa hàng trăm ngàn dòng request. Mỗi dòng có định dạng: [TIMESTAMP] [IP_ADDRESS] [URL].\nNhiệm vụ: Tìm IP nào đã gửi nhiều request nhất (nghi vấn DDoS) và in ra số lượng request của IP đó.',
+    'Hard',
+    0.0,
+    'BigData, String Processing'
+);
+
+USE LTM_Project;
+
+-- Mở rộng cột output để chứa được log kết quả chấm bài lớn
+ALTER TABLE Submissions MODIFY output LONGTEXT;
+
+-- Mở rộng luôn cột error để tránh lỗi tương tự nếu thông báo lỗi quá dài
+ALTER TABLE Submissions MODIFY error LONGTEXT;
